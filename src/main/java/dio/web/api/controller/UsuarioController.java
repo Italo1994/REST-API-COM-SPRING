@@ -7,6 +7,7 @@ import dio.web.api.model.Usuario;
 import dio.web.api.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ public class UsuarioController {
     private UsuarioRepository repository;
     
     @GetMapping("/users")
+    // @PreAuthorize("hasAnyRole('MANAGERS', 'USER')")
     public List<Usuario> getUsers() {
         return repository.findAll();
     }
@@ -39,5 +41,11 @@ public class UsuarioController {
     @PostMapping("/users")
     public void postUser(@RequestBody Usuario usuario) {
         repository.save(usuario);
+    }
+
+    @GetMapping("/managers")
+    // @PreAuthorize("hasRole('MANAGER')")
+    public String managers() {
+        return "Authorized manager";
     }
 }
